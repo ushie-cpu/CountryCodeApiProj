@@ -2,6 +2,7 @@
 using Data;
 using Entity.DTOs;
 using Microsoft.EntityFrameworkCore;
+using Services.Extensions;
 
 namespace Services
 {
@@ -18,13 +19,21 @@ namespace Services
 
         public async Task<Result> FindAsync(GetCountryDto request)
         {
-            var country = await repository.FindAsync(a => a.CountryCode.Equals(1))
+            var countryCode = request.PhoneNumber.GetCountryCode();
+            var country = await Task.Run(() => repository.FindAsync(a => a.CountryCode.Equals(countryCode))
                 .Include(a => a.CountryDetail) 
-                .FirstOrDefaultAsync();
+                .FirstOrDefault());
 
-            var data = mapper.Map<Result>(country); 
-            data.PhoneNumber = request.PhoneNumber; 
-            return data;    
+            if (country == null)
+            {
+                return null!;
+            }
+
+            return new Result
+            {
+                PhoneNumber = request.PhoneNumber,
+                Country = mapper.Map<CountryDto>(country)
+            };    
         }
     }
 }

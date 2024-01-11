@@ -1,13 +1,12 @@
 using Data;
-using Microsoft.EntityFrameworkCore;
 using Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
-builder.Services.AddDbContext<AppDBContext>(opt =>
+builder.Services.AddSingleton(provider =>
 {
-    opt.UseInMemoryDatabase("CountryCodeApiDB");
+    return new AppDBContext();
 });
 builder.Services.AddScoped<IRepository, Repository>();
 builder.Services.AddScoped<ICountryService, CountryService>();

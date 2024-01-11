@@ -20,7 +20,11 @@ namespace CountryCodeApiProj.Controllers
         [HttpGet]
         public async Task<IActionResult> Get([FromQuery]GetCountryDto request)
         {
-            return Ok(await service.FindAsync(request));
+            var result = await service.FindAsync(request);
+
+            if(result == null) return NotFound();
+
+            return Ok(result);
         }
     }
 }

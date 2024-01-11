@@ -5,7 +5,7 @@ namespace Entity.DTOs
     public record GetCountryDto
     {
         [Required,Phone]
-        public string? PhoneNumber { get; init; }
+        public string PhoneNumber { get; init; } = string.Empty;
     }
 
     public record Result

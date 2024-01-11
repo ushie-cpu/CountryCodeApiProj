@@ -5,6 +5,6 @@ namespace Data
 {
     public interface IRepository
     {
-        IQueryable<Country> FindAsync(Expression<Func<Country, bool>> expression, bool trackChanges = false);
+        IQueryable<Country> FindAsync(Expression<Func<Country, bool>> expression);
     }
 }

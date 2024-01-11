@@ -1,22 +1,25 @@
 ﻿using Data.Configuration;
 using Entity.Models;
-using Microsoft.EntityFrameworkCore;
 
 namespace Data
 {
-    public class AppDBContext : DbContext
+    public class AppDBContext
     {
-        public AppDBContext(DbContextOptions<AppDBContext> options) : base(options)
-        {
-        }
-        protected override void OnModelCreating(ModelBuilder modelBuilder)
-        {
-           base.OnModelCreating(modelBuilder);
-           // modelBuilder.ApplyConfiguration(new CountryData());
-        }
+        public ICollection<Country> Countries { get; set; } = Database.Country();
+        public ICollection<CountryDetail> CountryDetails { get; set; } = Database.CountryDetails();
 
-        public DbSet<Country>? Countries { get; set; }
-        public DbSet<CountryDetail>? CountryDetails { get; set; }
+        public AppDBContext(){}
+
+        public IQueryable<Country> Set() =>
+            (from country in Countries
+             select new Country
+             {
+                 Id = country.Id,
+                 Name = country.Name,
+                 CountryCode = country.CountryCode,
+                 CountryIso = country.CountryIso,
+                 CountryDetail = CountryDetails.Where(d => d.CountryId == country.Id).ToList(),
+             }).AsQueryable();
     }
 
 }

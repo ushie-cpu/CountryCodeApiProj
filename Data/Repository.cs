@@ -1,5 +1,4 @@
 ﻿using Entity.Models;
-using Microsoft.EntityFrameworkCore;
 using System.Linq.Expressions;
 
 namespace Data
@@ -13,9 +12,8 @@ namespace Data
             this.context = context;
         }
 
-        public IQueryable<Country> FindAsync(Expression<Func<Country, bool>> expression, bool trackChanges = false) => 
-            trackChanges ?
-                  context.Set<Country>().Where(expression) :
-                  context.Set<Country>().Where(expression).AsNoTracking();
+        public IQueryable<Country> FindAsync(Expression<Func<Country, bool>> expression) =>
+            context.Set().Where(expression);
+           
     }
 }

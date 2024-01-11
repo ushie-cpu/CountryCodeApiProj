@@ -8,7 +8,9 @@ namespace CountryCodeApiProj.Mapper
     {
         public MappingProfiles()
         {
-            CreateMap<Country, Result>();     
+            CreateMap<CountryDetail, CountryDetailsDto>();
+            CreateMap<Country, CountryDto>()
+                .ForMember(dest => dest.CountryDetails, opt => opt.MapFrom(src => src.CountryDetail));     
         }
     }
 }
